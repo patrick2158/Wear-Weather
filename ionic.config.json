@@ -4,5 +4,11 @@
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "proxies" : [
+    {
+      "path": "/weather",
+      "proxyUrl": "https://api2.sktelecom.com/weather/current/hourly"
+    }
+  ]
 }

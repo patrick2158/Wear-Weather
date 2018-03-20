@@ -1,14 +1,11 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content padding class="home-background">
+    <div>
+      <ion-datetime displayFormat="DDDD MMM DD, h:mm A" [(ngModel)]="myDate"></ion-datetime>
+    </div>
+    <div>
+      <ion-icon name="locate"></ion-icon> {{ (weather | async)?.weather.hourly[0].grid.city }}, {{ (weather | async)?.weather.hourly[0].grid.village }}
+    </div>
+    <div>
+      {{ (weather | async)?.weather.hourly[0].sky.name }} {{ (weather | async)?.weather.hourly[0].temperature.tc }}
+    </div>
 </ion-content>
