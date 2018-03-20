@@ -1,11 +1,19 @@
 <ion-content padding class="home-background">
-    <div>
-      <ion-datetime displayFormat="DDDD MMM DD, h:mm A" [(ngModel)]="myDate"></ion-datetime>
-    </div>
-    <div>
-      <ion-icon name="locate"></ion-icon> {{ (weather | async)?.weather.hourly[0].grid.city }}, {{ (weather | async)?.weather.hourly[0].grid.village }}
-    </div>
-    <div>
-      {{ (weather | async)?.weather.hourly[0].sky.name }} {{ (weather | async)?.weather.hourly[0].temperature.tc }}
-    </div>
+  <ion-fab top right>
+    <button ion-fab mini (click)="takePicture()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <div>
+    <ion-datetime displayFormat="DDDD MMM DD, h:mm A" [(ngModel)]="myDate"></ion-datetime>
+  </div>
+  <div>
+    <ion-icon name="locate"></ion-icon> {{ (weather | async)?.weather.hourly[0].grid.city }}, {{ (weather | async)?.weather.hourly[0].grid.village
+    }}
+  </div>
+  <div>
+    {{ (weather | async)?.weather.hourly[0].sky.name }} {{ (weather | async)?.weather.hourly[0].temperature.tc }}
+  </div>
+  <div>
+  </div>
 </ion-content>
