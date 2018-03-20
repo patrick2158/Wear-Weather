@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { share } from 'rxjs/operators';
 import * as moment from 'moment';
+
+import { UploadPage } from '../upload/upload';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController,
+    public modalCtrl: ModalController,
     public http: HttpClient,
     private geolocation: Geolocation,
     private camera: Camera) {
@@ -40,6 +43,11 @@ export class HomePage {
         data.weather.hourly[0].sky.code;
       });*/
     });
+  }
+
+  presentModal() {
+    let modal = this.modalCtrl.create(UploadPage);
+    modal.present();
   }
 
   takePicture() {

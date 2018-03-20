@@ -11,11 +11,13 @@ import { Camera } from '@ionic-native/camera';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { PositionProvider } from '../providers/position/position';
+import { UploadPage } from '../pages/upload/upload';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
+    UploadPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +27,8 @@ import { PositionProvider } from '../providers/position/position';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    UploadPage
   ],
   providers: [
     StatusBar,
