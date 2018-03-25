@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { share } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { UploadPage } from '../upload/upload';
 
@@ -27,7 +27,7 @@ export class HomePage {
     public modalCtrl: ModalController,
     public http: HttpClient,
     private geolocation: Geolocation,
-    private camera: Camera) {
+    private auth: AngularFireAuth) {
     //myDate
     let now = moment();
     this.myDate = moment(now.format(), moment.ISO_8601).format();
@@ -45,25 +45,12 @@ export class HomePage {
     });
   }
 
+  signOut() {
+    this.auth.auth.signOut();
+  }
+
   presentModal() {
     let modal = this.modalCtrl.create(UploadPage);
     modal.present();
-  }
-
-  takePicture() {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
-
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64:
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-    }, (err) => {
-      // Handle error
-    });
   }
 }
