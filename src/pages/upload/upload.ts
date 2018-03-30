@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Camera, CameraOptions } from "@ionic-native/camera";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ImageProvider } from '../../providers/image/image';
+import { PostListProvider } from '../../providers/post-list/post-list';
+import { Post } from '../../model/post/post';
 
 @Component({
   selector: 'page-upload',
@@ -11,17 +14,46 @@ import { ImageProvider } from '../../providers/image/image';
 export class UploadPage {
   private images = [];
   imageUrls = [];
+  postForm: FormGroup;
+
+  post: Post = {
+    weather: {
+      max: 0,
+      min: 0
+    },
+    city: '',
+    feel: ''
+  };
+
+  isEditable: boolean = false;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private camera: Camera,
     private afAuth: AngularFireAuth,
-    private imageSrv: ImageProvider) {
-    let data = localStorage.getItem('images');
+    private imageSrv: ImageProvider,
+    private postListProvider: PostListProvider,
+    private formBuilder: FormBuilder,
+    private viewCtrl: ViewController) {
+      /*this.postForm = this.formBuilder.group({
+        'weather' : {
+          'max': [0, Validators.required],
+          'min': [0, Validators.required]
+        },
+        'city': ['', Validators.required],
+        'feel': ['', Validators.required]
+      });*/
+
+      if(navParams.get('isEdited')) {
+        this.post = navParams.get('post');
+        this.isEditable = true;
+      }
+
+    /*let data = localStorage.getItem('images');
     if (data) {
       this.images = JSON.parse(data);
-    }
+    }*/
   }
 
   takePicture() {
@@ -57,5 +89,17 @@ export class UploadPage {
         this.imageUrls = urls;
         console.log(urls);
       });
+  }
+
+  savePost(post: Post) {
+    if(this.isEditable) {
+      this.postListProvider.updatePost(post).then(ref => {
+        this.viewCtrl.dismiss();
+      });
+    } else {
+      this.postListProvider.addPost(post).then(ref => {
+        this.viewCtrl.dismiss();
+      });
+    }
   }
 }

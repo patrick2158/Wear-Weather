@@ -9,6 +9,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { Camera } from '@ionic-native/camera';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -18,6 +19,7 @@ import { FIREBASE_CONFIG } from './app.firebase.config';
 import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { ImageProvider } from '../providers/image/image';
+import { PostListProvider } from '../providers/post-list/post-list';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { ImageProvider } from '../providers/image/image';
     IonicModule.forRoot(MyApp),
     HttpClientModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -49,7 +52,8 @@ import { ImageProvider } from '../providers/image/image';
     Geolocation,
     PositionProvider,
     Camera,
-    ImageProvider
+    ImageProvider,
+    PostListProvider,
   ]
 })
 export class AppModule {}

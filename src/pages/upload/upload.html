@@ -6,6 +6,17 @@
 
 
 <ion-content padding>
+  <form (ngSubmit)="savePost(post)">
+    <ion-item>
+      <ion-label>City</ion-label>
+      <ion-input [(ngModel)]="post.city" readonly="true" name="city"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Weather</ion-label>
+      <ion-input [(ngModel)]="post.weather.max" readonly="true" name="weatherMax"></ion-input>
+      <ion-input [(ngModel)]="post.weather.min" readonly="true" name="weatherMin"></ion-input>
+    </ion-item>
     <button ion-button full (click)="takePicture()">Take Picture</button>
     <button ion-button full (click)="downloadImageUrls()">Show Images</button>
     <ion-grid>
@@ -15,4 +26,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <button ion-button block clear>Save</button>
+  </form>
 </ion-content>

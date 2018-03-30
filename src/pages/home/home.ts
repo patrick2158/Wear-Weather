@@ -5,9 +5,12 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { share } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { UploadPage } from '../upload/upload';
+import { Post } from '../../model/post/post';
+import { PostListProvider } from '../../providers/post-list/post-list'; 
 
 
 @Component({
@@ -16,41 +19,57 @@ import { UploadPage } from '../upload/upload';
 })
 
 export class HomePage {
-  appKey: string = '5537c6f5-c7f6-4055-ad60-7043b9125387';
+  appid: string = 'a7d01c2c7c66c5cc425817b046434b5e';
   url: string = '/weather';
-  version: string = '1';
-  weather: Observable<any>;
+  units: string = 'metric';
   myDate: string;
+  weather: Observable<any>;
+  postList: Observable<Post[]>
 
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public http: HttpClient,
     private geolocation: Geolocation,
-    private auth: AngularFireAuth) {
+    private afAuth: AngularFireAuth,
+    private afDB: AngularFireDatabase,
+    private postListProvider: PostListProvider) {
     //myDate
     let now = moment();
     this.myDate = moment(now.format(), moment.ISO_8601).format();
     //weather
     geolocation.getCurrentPosition().then(pos => {
       this.weather = this.http.get(this.url, {
-        headers: new HttpHeaders().set('appKey', this.appKey),
-        params: new HttpParams().set('version', this.version)
+        params: new HttpParams()
           .set('lat', pos.coords.latitude.toString())
           .set('lon', pos.coords.longitude.toString())
+          .set('appid', this.appid)
+          .set('units', this.units)
       }).pipe(share());
-      /*this.weather.subscribe(data => {
-        data.weather.hourly[0].sky.code;
-      });*/
+      this.weather.subscribe(data => {
+        console.log(data);
+      });
     });
+
+    this.postList = this.postListProvider.getPostList().valueChanges();
   }
 
   signOut() {
-    this.auth.auth.signOut();
+    this.afAuth.auth.signOut();
   }
 
-  presentModal() {
+  addPost() {
     let modal = this.modalCtrl.create(UploadPage);
     modal.present();
+  }
+
+  editPost(post: Post) {
+    let params = { post: post, isEdited: true },
+    modal = this.modalCtrl.create(UploadPage, params);
+    modal.present();
+  }
+
+  removePost(post: Post) {
+    this.postListProvider.removePost(post);
   }
 }

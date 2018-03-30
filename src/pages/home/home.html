@@ -13,7 +13,7 @@
 
 <ion-content padding class="home-background">
   <ion-fab bottom right>
-    <button ion-fab mini (click)="presentModal()">
+    <button ion-fab mini (click)="addPost()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
@@ -21,12 +21,16 @@
     <ion-datetime displayFormat="DDDD MMM DD, h:mm A" [(ngModel)]="myDate"></ion-datetime>
   </div>
   <div>
-    <ion-icon name="locate"></ion-icon> {{ (weather | async)?.weather.hourly[0].grid.city }}, {{ (weather | async)?.weather.hourly[0].grid.village
-    }}
+    <ion-icon name="locate"></ion-icon> {{ (weather | async)?.name }}, {{ (weather | async)?.sys.country }}
   </div>
   <div>
-    {{ (weather | async)?.weather.hourly[0].sky.name }} {{ (weather | async)?.weather.hourly[0].temperature.tc }}
+    {{ (weather | async)?.main.temp }} ({{ (weather | async)?.main.temp_max }} / {{ (weather | async)?.main.temp_min }} )
   </div>
   <div>
+    <ion-list>
+      <ion-item *ngFor="let post of postList | async">
+        {{post | json }}
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
