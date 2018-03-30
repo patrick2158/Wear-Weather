@@ -11,26 +11,34 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="home-background">
+<ion-content padding>
   <ion-fab bottom right>
     <button ion-fab mini (click)="addPost()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-  <div>
-    <ion-datetime displayFormat="DDDD MMM DD, h:mm A" [(ngModel)]="myDate"></ion-datetime>
-  </div>
-  <div>
-    <ion-icon name="locate"></ion-icon> {{ (weather | async)?.name }}, {{ (weather | async)?.sys.country }}
-  </div>
-  <div>
-    {{ (weather | async)?.main.temp }} ({{ (weather | async)?.main.temp_max }} / {{ (weather | async)?.main.temp_min }} )
-  </div>
-  <div>
-    <ion-list>
-      <ion-item *ngFor="let post of postList | async">
-        {{post | json }}
-      </ion-item>
-    </ion-list>
-  </div>
+  <ion-card>
+    <ion-card-header>
+      Today's Weather
+    </ion-card-header>
+    <ion-card-content>
+      <img class="weather" src="../../assets/icon/weather/{{(weather | async)?.data[0].weather.icon}}.png">
+      <div>
+        <ion-icon name="thermometer"></ion-icon>
+        {{ (weather | async)?.data[0].temp }}° (
+        <span style="color:red">
+          <ion-icon name="arrow-round-up"></ion-icon> {{ (weather | async)?.data[0].max_temp }}° </span> /
+        <span style="color:blue">
+          <ion-icon name="arrow-round-down"></ion-icon> {{ (weather | async)?.data[0].min_temp }}° </span> )
+      </div>
+      <div>
+        <ion-icon name="pin"></ion-icon>
+        {{ (weather | async)?.city_name }}, {{ (weather | async)?.country_code }}
+      </div>
+      <div>
+        <ion-icon name="calendar"></ion-icon>
+        {{ (weather | async)?.data[0].datetime }}
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

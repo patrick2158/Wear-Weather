@@ -30,6 +30,7 @@ plugins/ios.json
 www/
 $RECYCLE.BIN/
 src/app/app.firebase.config.ts
+src/pages/home/home.config.ts
 
 .DS_Store
 Thumbs.db
