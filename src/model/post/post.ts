@@ -4,6 +4,7 @@ export interface Post {
         max: number,
         min: number
     };
+    country: string;
     city: string;
     feel: string;
 }

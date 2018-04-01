@@ -54,7 +54,8 @@ export class HomePage {
   }
 
   addPost() {
-    let modal = this.modalCtrl.create(UploadPage);
+    let params = { weather: this.weather, isAdded: true },
+    modal = this.modalCtrl.create(UploadPage, params);
     modal.present();
   }
 

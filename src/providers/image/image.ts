@@ -1,32 +1,29 @@
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @Injectable()
 export class ImageProvider {
+  public cameraImage: String
 
-  constructor() {
+  constructor(private camara: Camera) {
   }
 
-  uploadImage(image: string, userId: string): any {
-    let storageRef = firebase.storage().ref();
-    let imageName = this.generateUUID();
-    let imageRef = storageRef.child(`${userId}/${imageName}.jpg`);
-    return imageRef.putString(image, 'data_url');
-  }
+  selectImage(): Promise<any> {
+    return new Promise(resolve => {
+      let options: CameraOptions = {
+        quality: 100,
+        targetWidth: 320,
+        targetHeight: 240,
+        destinationType: this.camara.DestinationType.DATA_URL,
+        encodingType: this.camara.EncodingType.JPEG,
+        mediaType: this.camara.MediaType.PICTURE,
+        correctOrientation: true
+      };
 
-  getImage(userId: string, imageId: string): any {
-    let storageRef = firebase.storage().ref();
-    let imageRef = storageRef.child(`${userId}/${imageId}`);
-    return imageRef.getDownloadURL();
-  }
-
-  private generateUUID(): string {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
+      this.camara.getPicture(options).then( data => {
+        this.cameraImage = "data:image/jpeg;base64," + data;
+        resolve(this.cameraImage);
+      });
+    });
   }
 }

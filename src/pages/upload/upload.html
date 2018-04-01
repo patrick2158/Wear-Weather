@@ -10,10 +10,11 @@
     <ion-item>
       <ion-label>City</ion-label>
       <ion-input [(ngModel)]="post.city" readonly="true" name="city"></ion-input>
+      <ion-input [(ngModel)]="post.country" readonly="true" name="country"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Weather</ion-label>
+      <ion-label>Temp</ion-label>
       <ion-input [(ngModel)]="post.weather.max" readonly="true" name="weatherMax"></ion-input>
       <ion-input [(ngModel)]="post.weather.min" readonly="true" name="weatherMin"></ion-input>
     </ion-item>
