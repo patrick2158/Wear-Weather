@@ -21,6 +21,7 @@ import { LoginPage } from '../pages/login/login';
 import { SignupPage } from '../pages/signup/signup';
 import { ImageProvider } from '../providers/image/image';
 import { PostListProvider } from '../providers/post-list/post-list';
+import { PreloaderProvider } from '../providers/preloader/preloader';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { PostListProvider } from '../providers/post-list/post-list';
     Camera,
     ImageProvider,
     PostListProvider,
+    PreloaderProvider,
   ]
 })
 export class AppModule {}

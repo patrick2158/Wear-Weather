@@ -6,5 +6,7 @@ export interface Post {
     };
     country: string;
     city: string;
+    imageURL: string;
     feel: string;
+    like: number;
 }

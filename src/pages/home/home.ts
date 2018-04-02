@@ -11,6 +11,7 @@ import { UploadPage } from '../upload/upload';
 import { Post } from '../../model/post/post';
 import { PostListProvider } from '../../providers/post-list/post-list'; 
 import { WEATHER_API_KEY } from './home.config';
+import { PreloaderProvider } from '../../providers/preloader/preloader';
 
 
 @Component({
@@ -32,8 +33,10 @@ export class HomePage {
     private geolocation: Geolocation,
     private afAuth: AngularFireAuth,
     private afDB: AngularFireDatabase,
-    private postListProvider: PostListProvider) {
+    private postListProvider: PostListProvider,
+    private preloader: PreloaderProvider) {
 
+    preloader.displayPreloader();
     //weather
     geolocation.getCurrentPosition().then(pos => {
       this.weather = this.http.get(this.url, {
@@ -47,6 +50,7 @@ export class HomePage {
     });
 
     this.postList = this.postListProvider.getPostList().valueChanges();
+    preloader.hidePreloader();
   }
 
   signOut() {

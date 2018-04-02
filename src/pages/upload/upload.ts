@@ -3,6 +3,7 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ImageProvider } from '../../providers/image/image';
 import { PostListProvider } from '../../providers/post-list/post-list';
+import { PreloaderProvider } from '../../providers/preloader/preloader';
 import { Post } from '../../model/post/post';
 
 @Component({
@@ -10,8 +11,7 @@ import { Post } from '../../model/post/post';
   templateUrl: 'upload.html',
 })
 export class UploadPage {
-  private images = [];
-  imageUrls = [];
+  private image;
 
   post: Post = {
     weather: {
@@ -20,7 +20,9 @@ export class UploadPage {
     },
     country: '',
     city: '',
-    feel: ''
+    imageURL: '',
+    feel: '',
+    like: 0
   };
 
   isEditable: boolean = false;
@@ -29,9 +31,12 @@ export class UploadPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
-    private imageSrv: ImageProvider,
+    private imageProvider: ImageProvider,
     private postListProvider: PostListProvider,
-    private viewCtrl: ViewController) {
+    private viewCtrl: ViewController,
+    private preloader: PreloaderProvider) {
+    
+    this.preloader.displayPreloader();
 
     if (navParams.get('isAdded')) {
       navParams.get('weather').subscribe(weather => {
@@ -46,17 +51,31 @@ export class UploadPage {
       this.post = navParams.get('post');
       this.isEditable = true;
     };
+
+    this.preloader.hidePreloader();
   }
 
   savePost(post: Post) {
+    this.preloader.displayPreloader();
+
     if (this.isEditable) {
       this.postListProvider.updatePost(post).then(ref => {
         this.viewCtrl.dismiss();
       });
     } else {
-      this.postListProvider.addPost(post).then(ref => {
-        this.viewCtrl.dismiss();
+      this.postListProvider.uploadImage(this.image).then(snapshot => {
+        this.post.imageURL = snapshot.downloadURL;
+        this.postListProvider.addPost(post).then(ref => {
+          this.preloader.hidePreloader();
+        });
       });
     }
+    this.viewCtrl.dismiss();
+  }
+
+  selectImage() {
+    this.imageProvider.selectImage().then(data => {
+      this.image = data;
+    });
   }
 }
